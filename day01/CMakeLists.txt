@@ -1,0 +1,66 @@
+cmake_minimum_required(VERSION 3.16)
+project(day01)
+
+set(CMAKE_CXX_STANDARD 11)
+
+# Auto call moc, uic, rcc to process qt extend
+set(CMAKE_AUTOMOC ON) # signal and slot
+set(CMAKE_AUTOUIC ON) # ui
+set(CMAKE_AUTORCC ON) # position
+
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+# Set find__xxx path
+set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/qt)
+
+# Qt config
+file(
+        WRITE
+        ${CMAKE_CURRENT_SOURCE_DIR}/build/bin/qt.conf
+        "[Paths]
+#Prefix=../lib/Qt
+#Binaries=bin
+#Libraries=lib
+Plugins=${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/qt/plugins
+#Imports=imports
+#Qml2Imports=qml"
+)
+
+# Find Qt libraries
+find_package(Qt5Core REQUIRED)
+find_package(Qt5Gui REQUIRED)
+find_package(Qt5Widgets REQUIRED)
+find_package(Qt5OpenGL REQUIRED)
+find_package(Qt5Network REQUIRED)
+
+set(QT_LIBRARIES
+        ${Qt5_LIBRARIES}
+        ${Qt5Gui_LIBRARIES}
+        ${Qt5Widgets_LIBRARIES}
+        ${Qt5OpenGL_LIBRARIES}
+        ${Qt5Network_LIBRARIES}
+        ${Qt5Xml_LIBRARIES}
+        ${Qt5Qml_LIBRARIES}
+)
+
+include_directories(
+        ${Qt5Core_INCLUDE_DIRS}
+        ${Qt5Gui_INCLUDE_DIRS}
+        ${Qt5Widgets_INCLUDE_DIRS}
+        ${Qt5Network_INCLUDE_DIRS}
+)
+
+# Thread
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -lpthread -g3 -Wall")
+
+# PIC
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
+
+add_executable(day01
+        main.cpp
+        mainwindow.cpp
+)
+target_link_libraries(
+        day01
+        ${QT_LIBRARIES}
+)
