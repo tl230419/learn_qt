@@ -56,11 +56,22 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -lpthread -g3 -Wall")
 # PIC
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC")
 
-add_executable(day01
-        main.cpp
-        mainwindow.cpp
+FILE(GLOB SRC_FILES "./*.cpp")
+FILE(GLOB HEAD_FILES "./*.h")
+FILE(GLOB UI_FILES "./*.ui")
+
+# qt_wrap_ui called with incorrect number of arguments ???
+#qt_wrap_ui(WRAP_FILES ${UI_FILES})
+
+set(RCC_FILES resources.qrc)
+
+add_executable(${PROJECT_NAME}
+        ${SRC_FILES}
+        ${HEAD_FILES}
+        ${RCC_FILES}
+#        ${WRAP_FILES}
 )
 target_link_libraries(
-        day01
+        ${PROJECT_NAME}
         ${QT_LIBRARIES}
 )
