@@ -9,9 +9,36 @@
 #include <QToolBox>
 #include <QTableWidget>
 #include <QLineEdit>
+#include <QPainter>
+#include <QTime>
+
+const QPoint hour_hand[4] =
+{
+      QPoint(3, 5),
+      QPoint(0, 13),
+      QPoint(-3, 5),
+      QPoint(0, -40)
+};
+
+const QPoint minute_hand[4] =
+{
+        QPoint(3, 5),
+        QPoint(0, 16),
+        QPoint(-3, 5),
+        QPoint(0, -70)
+};
+
+const QPoint second_hand[4] =
+{
+        QPoint(3, 5),
+        QPoint(0, 18),
+        QPoint(-3, 5),
+        QPoint(0, -90)
+};
 
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
+    , t(this)
 {
     // day02_01_1
     /*
@@ -91,6 +118,7 @@ MainWindow::MainWindow(QWidget *parent)
     w->setItem(0, 1, item2);
     */
 
+    /*
     const char *btn_text[20] =
     {
             "7", "8", "9", "+", "(",
@@ -111,9 +139,98 @@ MainWindow::MainWindow(QWidget *parent)
     }
     layout->addLayout(layout1);
     setLayout(layout);
+    */
+
+    setFixedSize(600, 600);
+    connect(&t, &QTimer::timeout, [this](){
+        update(); // Auto call paintEvent method
+    });
+    t.start();
 }
 
 MainWindow::~MainWindow()
 {
 
+}
+
+void MainWindow::paintEvent(QPaintEvent *event)
+{
+    // day02_02
+    /*
+    QPainter *painter = new QPainter(this);
+    QPen *p = new QPen(QColor(Qt::GlobalColor::red));
+    painter->setPen(*p);
+    painter->drawLine(100, 100, 200, 200);
+    painter->drawText(300, 300, "中国");
+    painter->drawRect(50, 50, 200, 200);
+    painter->drawArc(300, 300, 100, 100, 0, 30 * 16);
+    painter->drawRect(300, 300, 100, 100);
+    painter->drawEllipse(200, 200, 100, 100);
+
+    QPoint point1(100, 100);
+    QPoint point2(100, 150);
+    QPoint point3(150, 100);
+    QPoint point4(150, 200);
+    QPoint point5(100, 100);
+
+    QPoint arr[] = { point1, point2, point3, point4, point5 };
+    painter->drawConvexPolygon(arr, 4);
+    */
+
+    QPainter painter(this);
+    painter.setRenderHint(QPainter::Antialiasing, true);
+    painter.translate(300, 300);
+    draw_scale(painter);
+    draw_second(painter);
+    draw_min(painter);
+    draw_hour(painter);
+}
+
+void MainWindow::draw_scale(QPainter &painter)
+{
+    for (int i = 1; i <= 60; i++)
+    {
+        painter.save();
+        painter.rotate(6 * i);
+        if (i % 5 == 0)
+        {
+            painter.drawLine(0, -98, 0, -82);
+            painter.drawText(-20, -80, 40, 40, Qt::AlignHCenter, QString::number(i / 5));
+        }
+        else
+        {
+            painter.drawLine(0, -98, 0, -88);
+        }
+        painter.restore();
+    }
+}
+void MainWindow::draw_second(QPainter &painter)
+{
+    int second = QTime().currentTime().second();
+    painter.save();
+    painter.rotate(6 * second);
+    QBrush brush(Qt::red);
+    painter.drawConvexPolygon(second_hand, 4);
+    painter.restore();
+}
+void MainWindow::draw_min(QPainter &painter)
+{
+    int min = QTime().currentTime().minute();
+    painter.save();
+    painter.rotate(6 * min);
+    QBrush brush(Qt::blue);
+    painter.setBrush(brush);
+    painter.drawConvexPolygon(minute_hand, 4);
+    painter.restore();
+}
+void MainWindow::draw_hour(QPainter &painter)
+{
+    int hour = QTime().currentTime().hour();
+    int min = QTime().currentTime().minute();
+    painter.save();
+    painter.rotate(30 * hour + 30 * (min / (float)60));
+    QBrush brush(Qt::black);
+    painter.setBrush(brush);
+    painter.drawConvexPolygon(hour_hand, 4);
+    painter.restore();
 }
