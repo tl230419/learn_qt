@@ -39,6 +39,8 @@ const QPoint second_hand[4] =
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
     , t(this)
+    , server(nullptr)
+//    , client(nullptr)
 {
     // day02_01_1
     /*
@@ -141,16 +143,33 @@ MainWindow::MainWindow(QWidget *parent)
     setLayout(layout);
     */
 
+    // day02_03
+    /*
     setFixedSize(600, 600);
     connect(&t, &QTimer::timeout, [this](){
         update(); // Auto call paintEvent method
     });
     t.start();
+    */
+//    server = new server_window::ServerWindow(this);
+//    client = new client_window::ClientWindow(this);
+//    server->show();
+//    client->show();
+//    test_server.show();
 }
 
 MainWindow::~MainWindow()
 {
-
+//    if (server != nullptr)
+//    {
+//        delete server;
+//        server = nullptr;
+//    }
+//    if (client != nullptr)
+//    {
+//        delete client;
+//        client = nullptr;
+//    }
 }
 
 void MainWindow::paintEvent(QPaintEvent *event)
@@ -177,6 +196,8 @@ void MainWindow::paintEvent(QPaintEvent *event)
     painter->drawConvexPolygon(arr, 4);
     */
 
+    // day02_03
+    /*
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
     painter.translate(300, 300);
@@ -184,6 +205,7 @@ void MainWindow::paintEvent(QPaintEvent *event)
     draw_second(painter);
     draw_min(painter);
     draw_hour(painter);
+    */
 }
 
 void MainWindow::draw_scale(QPainter &painter)
