@@ -3,8 +3,6 @@
 
 #include <QWidget>
 #include <QTimer>
-#include "server_window.h"
-#include "client_window.h"
 
 class MainWindow: public QWidget
 {
@@ -24,8 +22,6 @@ private:
 
 private:
     QTimer t;
-//    client_window::ClientWindow *client;
-    server_window::ServerWindow *server;
 
 };
 

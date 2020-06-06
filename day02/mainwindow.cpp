@@ -39,8 +39,6 @@ const QPoint second_hand[4] =
 MainWindow::MainWindow(QWidget *parent)
     : QWidget(parent)
     , t(this)
-    , server(nullptr)
-//    , client(nullptr)
 {
     // day02_01_1
     /*
@@ -151,25 +149,11 @@ MainWindow::MainWindow(QWidget *parent)
     });
     t.start();
     */
-//    server = new server_window::ServerWindow(this);
-//    client = new client_window::ClientWindow(this);
-//    server->show();
-//    client->show();
-//    test_server.show();
 }
 
 MainWindow::~MainWindow()
 {
-//    if (server != nullptr)
-//    {
-//        delete server;
-//        server = nullptr;
-//    }
-//    if (client != nullptr)
-//    {
-//        delete client;
-//        client = nullptr;
-//    }
+
 }
 
 void MainWindow::paintEvent(QPaintEvent *event)

@@ -20,12 +20,12 @@ public:
     ServerWindow(QWidget *parent = Q_NULLPTR);
     ~ServerWindow();
 
-private:
-    void init_socket();
-
 private Q_SLOTS:
     void client_connect_to_server();
     void receive_msg();
+
+private:
+    void init_socket();
 
 private:
     QTcpServer *server;

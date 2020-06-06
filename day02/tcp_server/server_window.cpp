@@ -23,7 +23,7 @@ ServerWindow::ServerWindow(QWidget *parent)
 
     recv_msg->setEnabled(false);
 
-    QHBoxLayout *btn_layout = QHBoxLayout;
+    QHBoxLayout *btn_layout = new QHBoxLayout;
     QPushButton *send_btn = new QPushButton("发送");
     QPushButton *close_btn = new QPushButton("关闭");
 
@@ -35,6 +35,14 @@ ServerWindow::ServerWindow(QWidget *parent)
     setLayout(layout);
 
     init_socket();
+
+    connect(send_btn,&QPushButton::clicked,[=](){
+        QString msg = send_msg->toPlainText();
+        socket->write(msg.toUtf8().data());
+    });
+    connect(close_btn, &QPushButton::clicked, [=](){
+        this->close();
+    });
 }
 
 ServerWindow::~ServerWindow()
@@ -67,6 +75,7 @@ void ServerWindow::init_socket()
 
 void ServerWindow::client_connect_to_server()
 {
+    recv_msg->append("waitting");
     socket = server->nextPendingConnection();
     QString ip = socket->peerAddress().toString();
     int port = socket->peerPort();

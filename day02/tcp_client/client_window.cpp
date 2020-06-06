@@ -8,6 +8,7 @@
 #include <QLineEdit>
 #include <QTextEdit>
 #include <QPushButton>
+#include <QObject>
 
 namespace client_window
 {
@@ -39,8 +40,8 @@ ClientWindow::ClientWindow(QWidget *parent)
     recv_msg->setEnabled(false);
 
     QHBoxLayout *btn_layout = new QHBoxLayout;
-    QPushButton send_btn = new QPushButton("发送");
-    QPushButton close_btn = new QPushButton("关闭");
+    QPushButton *send_btn = new QPushButton("发送");
+    QPushButton *close_btn = new QPushButton("关闭");
 
     layout->addLayout(hl);
     layout->addWidget(recv_msg);
@@ -50,14 +51,22 @@ ClientWindow::ClientWindow(QWidget *parent)
     layout->addLayout(btn_layout);
     setLayout(layout);
 
-    connect(connect_btn, &QPushButton::click,this, [=](){
+    connect(connect_btn, &QPushButton::clicked,this, [=](){
         QString ip = ip_edit->text();
         quint16 port = port_edit->text().toInt();
         socket->connectToHost(ip, port);
+        recv_msg->append("try to connect server");
     });
-    connect(send_btn, &QTcpSocket::readyRead, this, [=](){
+    connect(send_btn,&QPushButton::clicked,[=](){
+        QString msg = send_msg->toPlainText();
+        socket->write(msg.toUtf8().data());
+    });
+    connect(socket,&QTcpSocket::readyRead,this,[=](){
         QByteArray data = socket->readAll();
         recv_msg->append(QString(data));
+    });
+    connect(close_btn, &QPushButton::clicked, [=](){
+        this->close();
     });
 }
 
