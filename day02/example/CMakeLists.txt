@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(day02)
+project(chat)
 
 set(CMAKE_CXX_STANDARD 11)
 
@@ -9,10 +9,10 @@ set(CMAKE_AUTOUIC ON) # ui
 set(CMAKE_AUTORCC ON) # position
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/3rdparty/qt/bin)
+set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/../3rdparty/qt/bin)
 
 # Set find__xxx path
-set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/qt)
+set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/qt)
 
 # Qt config
 file(
@@ -66,12 +66,12 @@ FILE(GLOB UI_FILES "./*.ui")
 
 set(RCC_FILES resources.qrc)
 
-add_subdirectory(tcp_client)
-add_subdirectory(tcp_server)
-add_subdirectory(udp_client)
-add_subdirectory(udp_server)
-add_subdirectory(example)
-
+#add_library(${PROJECT_NAME} SHARED
+#        ${SRC_FILES}
+#        ${HEAD_FILES}
+#        ${RCC_FILES}
+#        ${WRAP_FILES}
+#)
 add_executable(${PROJECT_NAME}
         ${SRC_FILES}
         ${HEAD_FILES}
